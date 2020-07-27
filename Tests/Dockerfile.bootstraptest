@@ -1,0 +1,14 @@
+FROM mcr.microsoft.com/azure-cli:2.0.80
+
+ARG IS_LOCAL
+ARG SUBSCRIPTION_ID
+ARG ENV_NAME
+
+WORKDIR /usr/src/app
+
+COPY . .
+
+RUN apk update && \
+    apk add --no-cache bats
+
+RUN if [[ ${IS_LOCAL} == "true" ]]; then ./bootstrap-test.sh -e ${ENV_NAME} -s ${SUBSCRIPTION_ID} -l; else ./bootstrap-test.sh -e ${ENV_NAME} -s ${SUBSCRIPTION_ID}; fi
