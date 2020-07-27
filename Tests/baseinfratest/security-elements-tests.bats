@@ -17,9 +17,9 @@ function test_kv_accesspolicies()
 {
     objectId=$(az vm show -g ${RESOURCE_GROUP} -n ${VM_NAME} --query "identity.userAssignedIdentities.principalId" | sed 's/"//g')
     result=$(az keyvault show -g ${RESOURCE_GROUP} -n ${KV_NAME} --query "properties.accessPolicies[*].objectId" -o json)
-    echo  "$result.[1]"
+    echo  "$result"
     echo "$objectId" 
-    [ "$result.[1]" == "$objectId" ]
+    [ "$result" == "$objectId" ]
 }
 
 setup() {
@@ -28,8 +28,8 @@ setup() {
     APP_RESOURCE_GROUP="ptc-app-${ENV_NAME}-rg"
     
     SHR_VNET_NAME="shr-ntwk-${ENV_NAME}-vnet"
-    JENKINS_SUBNET_NAME="ptc-cicd-${ENV_NAME}-snt"
-    APP_SUBNET_NAME="ptc-app-${ENV_NAME}-snt"
+    JENKINS_SUBNET_NAME="ptc-cicd-snt"
+    APP_SUBNET_NAME="ptc-app-snt"
 
     JENKINS_KV_NAME="ptc-cicd-${ENV_NAME}-kvt"
     APP_KV_NAME="ptc-app-${ENV_NAME}-kvt"
@@ -54,20 +54,20 @@ setup() {
 }
 
 #Validate kv network policies
-@test "If jenkins_kv_policies provisioned" {
-    RESOURCE_GROUP="$JENKINS_RESOURCE_GROUP"
-    KV_NAME="$JENKINS_KV_NAME"
-    NETWORK_RG="$NETWORK_RESOURCE_GROUP"
-    VNET_NAME="$SHR_VNET_NAME"
-    SUBNET_NAME="$JENKINS_SUBNET_NAME"
-    test_kv_networkpolicies
-}
+#@test "If jenkins_kv_policies provisioned" {
+ #   RESOURCE_GROUP="$JENKINS_RESOURCE_GROUP"
+  #  KV_NAME="$JENKINS_KV_NAME"
+   # NETWORK_RG="$NETWORK_RESOURCE_GROUP"
+   # VNET_NAME="$SHR_VNET_NAME"
+    #SUBNET_NAME="$JENKINS_SUBNET_NAME"
+    #test_kv_networkpolicies
+#}
 
 #Validate kv access policies
-@test "If jenkins_kv_access_policies provisioned" {
-    RESOURCE_GROUP="$JENKINS_RESOURCE_GROUP"
-    KV_NAME="$JENKINS_KV_NAME"
-    VM_NAME="$JENKINS_VM_NAME"
+#@test "If jenkins_kv_access_policies provisioned" {
+ #   RESOURCE_GROUP="$JENKINS_RESOURCE_GROUP"
+  #  KV_NAME="$JENKINS_KV_NAME"
+   # VM_NAME="$JENKINS_VM_NAME"
 
-    test_kv_accesspolicies
-}
+    #test_kv_accesspolicies
+#}
